@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, must_be_immutable
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flower_app/model/item.dart';
 import 'package:flutter_flower_app/pages/checkout.dart';
@@ -102,7 +103,7 @@ class Home extends StatelessWidget {
                         builder: (context) => Home(),
                       ),
                     );
-                  },
+                  },  
                 ),
                 ListTile(
                     title: Text("My products"),
@@ -122,7 +123,9 @@ class Home extends StatelessWidget {
                 ListTile(
                     title: Text("Logout"),
                     leading: Icon(Icons.exit_to_app),
-                    onTap: () {}),
+                    onTap: () async {
+                      await FirebaseAuth.instance.signOut();
+                    }),
               ],
             ),
             Container(
