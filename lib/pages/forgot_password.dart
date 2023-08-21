@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flower_app/pages/sign_in.dart';
 import 'package:flutter_flower_app/shared/colors.dart';
@@ -17,6 +18,30 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   final emailController = TextEditingController();
   bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
+
+  resetPassword() async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: Colors.white,
+            ),
+          );
+        });
+
+    try {
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: emailController.text);
+      if (!mounted) return;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Login()),
+      );
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(context, "Error : ${e.code}");
+    }
+  }
 
   @override
   void dispose() {
@@ -68,6 +93,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
+                      resetPassword();
                       // showSnackBar(context, "Done");
                     } else {
                       showSnackBar(context, "Error");

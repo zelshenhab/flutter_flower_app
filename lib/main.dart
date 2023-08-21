@@ -6,6 +6,7 @@ import 'package:flutter_flower_app/pages/details_screen.dart';
 import 'package:flutter_flower_app/pages/home.dart';
 import 'package:flutter_flower_app/pages/sign_in.dart';
 import 'package:flutter_flower_app/pages/register.dart';
+import 'package:flutter_flower_app/pages/verify_email.dart';
 import 'package:flutter_flower_app/provider/cart.dart';
 import 'package:flutter_flower_app/shared/snackbar.dart';
 import 'package:provider/provider.dart';
@@ -40,7 +41,8 @@ class MyApp extends StatelessWidget {
               } else if (snapshot.hasError) {
                 return showSnackBar(context, "Something went wrong");
               } else if (snapshot.hasData) {
-                return Home();
+                // return Home();
+                return VerifyEmailPage();
               } else {
                 return Login();
               }
