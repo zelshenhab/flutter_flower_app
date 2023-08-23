@@ -8,10 +8,14 @@ import 'package:flutter_flower_app/pages/sign_in.dart';
 import 'package:flutter_flower_app/pages/register.dart';
 import 'package:flutter_flower_app/pages/verify_email.dart';
 import 'package:flutter_flower_app/provider/cart.dart';
+import 'package:flutter_flower_app/provider/google_signin.dart';
 import 'package:flutter_flower_app/shared/snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,11 +28,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) {
-        return Cart();
-      },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) {
+          return Cart();
+        }),
+        ChangeNotifierProvider(create: (context) {
+          return GoogleSignInProvider();
+        }),
+      ],
       child: MaterialApp(
+          title: "myApp",
           debugShowCheckedModeBanner: false,
           home: StreamBuilder(
             stream: FirebaseAuth.instance.authStateChanges(),
@@ -41,8 +51,7 @@ class MyApp extends StatelessWidget {
               } else if (snapshot.hasError) {
                 return showSnackBar(context, "Something went wrong");
               } else if (snapshot.hasData) {
-                // return Home();
-                return VerifyEmailPage();
+                return VerifyEmailPage(); // home() OR verify email
               } else {
                 return Login();
               }

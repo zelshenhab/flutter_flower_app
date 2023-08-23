@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_flower_app/model/item.dart';
 import 'package:flutter_flower_app/pages/checkout.dart';
 import 'package:flutter_flower_app/pages/details_screen.dart';
+import 'package:flutter_flower_app/pages/profile_page.dart';
 import 'package:flutter_flower_app/provider/cart.dart';
 import 'package:flutter_flower_app/shared/appbar.dart';
 import 'package:flutter_flower_app/shared/colors.dart';
@@ -16,6 +17,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final classInstancee = Provider.of<Cart>(context);
+    final user = FirebaseAuth.instance.currentUser!;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(top: 20),
@@ -81,15 +83,14 @@ class Home extends StatelessWidget {
                 UserAccountsDrawerHeader(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage("assets/img/zeyad4.jpg"),
-                        fit: BoxFit.cover),
+                        image: NetworkImage(user.photoURL!), fit: BoxFit.cover),
                   ),
                   currentAccountPicture: CircleAvatar(
                       radius: 55,
-                      backgroundImage: AssetImage("assets/img/zeyad.jpg")),
-                  accountEmail: Text("zeyad@yahoo.com"),
+                      backgroundImage: NetworkImage(user.photoURL!)),
+                  accountEmail: Text(user.email!),
                   accountName: Text(
-                    "Zeyad Elshenhab",
+                    user.displayName!,
                     style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
                   ),
                 ),
@@ -103,7 +104,7 @@ class Home extends StatelessWidget {
                         builder: (context) => Home(),
                       ),
                     );
-                  },  
+                  },
                 ),
                 ListTile(
                     title: Text("My products"),
@@ -120,6 +121,16 @@ class Home extends StatelessWidget {
                     title: Text("About"),
                     leading: Icon(Icons.help_center),
                     onTap: () {}),
+                ListTile(
+                    title: Text("Profile Page"),
+                    leading: Icon(Icons.person),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProfilePage(),
+                          ));
+                    }),
                 ListTile(
                     title: Text("Logout"),
                     leading: Icon(Icons.exit_to_app),
