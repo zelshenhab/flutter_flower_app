@@ -17,7 +17,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final classInstancee = Provider.of<Cart>(context);
-    final user = FirebaseAuth.instance.currentUser!;
+    // final user = FirebaseAuth.instance.currentUser!;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(top: 20),
@@ -83,14 +83,16 @@ class Home extends StatelessWidget {
                 UserAccountsDrawerHeader(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: NetworkImage(user.photoURL!), fit: BoxFit.cover),
+                        image: AssetImage("assets/img/zeyad.jpg"),
+                        fit: BoxFit.cover),
                   ),
                   currentAccountPicture: CircleAvatar(
-                      radius: 55,
-                      backgroundImage: NetworkImage(user.photoURL!)),
-                  accountEmail: Text(user.email!),
+                    radius: 55,
+                    backgroundImage: AssetImage("assets/img/zeyad.jpg"),
+                  ),
+                  accountEmail: Text("zeyad@gmail.com"),
                   accountName: Text(
-                    user.displayName!,
+                    "Zeyad Elshenhab",
                     style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
                   ),
                 ),

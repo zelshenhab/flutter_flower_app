@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_flower_app/shared/colors.dart';
+import 'package:flutter_flower_app/shared/data_from_firestore.dart';
+import 'package:intl/intl.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -44,70 +46,75 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(22.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-                child: Container(
-              padding: EdgeInsets.all(11),
-              decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 131, 177, 255),
-                  borderRadius: BorderRadius.circular(11)),
-              child: Text(
-                "Info from firebase Auth",
-                style: TextStyle(
-                  fontSize: 22,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                  child: Container(
+                padding: EdgeInsets.all(11),
+                decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 131, 177, 255),
+                    borderRadius: BorderRadius.circular(11)),
+                child: Text(
+                  "Info from firebase Auth",
+                  style: TextStyle(
+                    fontSize: 22,
+                  ),
                 ),
+              )),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 11,
+                  ),
+                  Text(
+                    "Email:    ${credential!.email}   ",
+                    style: TextStyle(
+                      fontSize: 17,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 11,
+                  ),
+                  Text(
+                    "Created date:    ${DateFormat("MMMM d, y").format(credential!.metadata.creationTime!)}   ",
+                    style: TextStyle(
+                      fontSize: 17,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 11,
+                  ),
+                  Text(
+                    "Last Signed In:  ${DateFormat("MMMM d, y").format(credential!.metadata.lastSignInTime!)} ",
+                    style: TextStyle(
+                      fontSize: 17,
+                    ),
+                  ),
+                ],
               ),
-            )),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 11,
-                ),
-                Text(
-                  "Email:       ",
-                  style: TextStyle(
-                    fontSize: 17,
-                  ),
-                ),
-                SizedBox(
-                  height: 11,
-                ),
-                Text(
-                  "Created date:      ",
-                  style: TextStyle(
-                    fontSize: 17,
-                  ),
-                ),
-                SizedBox(
-                  height: 11,
-                ),
-                Text(
-                  "Last Signed In:  ",
-                  style: TextStyle(
-                    fontSize: 17,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 55,
-            ),
-            Center(
-                child: Container(
-                    padding: EdgeInsets.all(11),
-                    decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 131, 177, 255),
-                        borderRadius: BorderRadius.circular(11)),
-                    child: Text(
-                      "Info from firebase firestore",
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ))),
-          ],
+              SizedBox(
+                height: 55,
+              ),
+              Center(
+                  child: Container(
+                      padding: EdgeInsets.all(11),
+                      decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 131, 177, 255),
+                          borderRadius: BorderRadius.circular(11)),
+                      child: Text(
+                        "Info from firebase firestore",
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ))),
+              GetDataFromFirestore(
+                documentId: credential!.uid,
+              ),
+            ],
+          ),
         ),
       ),
     );

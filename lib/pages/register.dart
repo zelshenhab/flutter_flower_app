@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flower_app/pages/sign_in.dart';
@@ -20,6 +21,9 @@ class _RegisterState extends State<Register> {
   bool isLoading = false;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final usernameController = TextEditingController();
+  final ageController = TextEditingController();
+  final titleController = TextEditingController();
   bool isPassword8Char = false;
   bool isPasswordHas1Number = false;
   bool hasUppercase = false;
@@ -61,6 +65,22 @@ class _RegisterState extends State<Register> {
         email: emailController.text,
         password: passwordController.text,
       );
+      print(credential.user!.uid);
+
+      CollectionReference users =
+          FirebaseFirestore.instance.collection('users');
+
+      users
+          .doc(credential.user!.uid)
+          .set({
+            'username': usernameController.text,
+            'age': ageController.text,
+            "title": titleController.text,
+            "email": emailController.text,
+            "pass": passwordController.text,
+          })
+          .then((value) => print("User Added"))
+          .catchError((error) => print("Failed to add user: $error"));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         // print('The password provided is too weak.');
@@ -85,6 +105,9 @@ class _RegisterState extends State<Register> {
     // TODO: implement dispose
     emailController.dispose();
     passwordController.dispose();
+    usernameController.dispose();
+    ageController.dispose();
+    titleController.dispose();
     super.dispose();
   }
 
@@ -105,6 +128,7 @@ class _RegisterState extends State<Register> {
                 // mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   TextField(
+                      controller: usernameController,
                       keyboardType: TextInputType.text,
                       obscureText: false,
                       decoration: decorationTextField.copyWith(
@@ -114,6 +138,7 @@ class _RegisterState extends State<Register> {
                     height: 25,
                   ),
                   TextFormField(
+                      controller: ageController,
                       keyboardType: TextInputType.number,
                       obscureText: false,
                       decoration: decorationTextField.copyWith(
@@ -123,6 +148,7 @@ class _RegisterState extends State<Register> {
                     height: 25,
                   ),
                   TextFormField(
+                      controller: titleController,
                       keyboardType: TextInputType.text,
                       obscureText: false,
                       decoration: decorationTextField.copyWith(
