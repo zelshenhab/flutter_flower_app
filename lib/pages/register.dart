@@ -7,6 +7,8 @@ import 'package:flutter_flower_app/pages/sign_in.dart';
 import 'package:flutter_flower_app/shared/colors.dart';
 import 'package:flutter_flower_app/shared/constants.dart';
 import 'package:flutter_flower_app/shared/snackbar.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -17,6 +19,7 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   bool isVisable = true;
+  File? imgPath;
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
   final emailController = TextEditingController();
@@ -29,6 +32,22 @@ class _RegisterState extends State<Register> {
   bool hasUppercase = false;
   bool hasLowercase = false;
   bool hasSpecialCharacters = false;
+
+  uploadImage2Screen() async {
+    final pickedImg =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    try {
+      if (pickedImg != null) {
+        setState(() {
+          imgPath = File(pickedImg.path);
+        });
+      } else {
+        print("NO img selected");
+      }
+    } catch (e) {
+      print("Error => $e");
+    }
+  }
 
   onPasswordChanged(String password) {
     isPassword8Char = false;
@@ -127,6 +146,44 @@ class _RegisterState extends State<Register> {
               child: Column(
                 // mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color.fromARGB(125, 78, 91, 110)),
+                    child: Stack(
+                      children: [
+                        imgPath == null
+                            ? CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: 70,
+                                backgroundImage:
+                                    AssetImage("assets/img/avatar.jpeg"),
+                              )
+                            : ClipOval(
+                                child: Image.file(
+                                imgPath!,
+                                width: 145,
+                                height: 145,
+                                fit: BoxFit.cover,
+                              )),
+                        Positioned(
+                          bottom: -10,
+                          left: 95,
+                          child: IconButton(
+                            onPressed: () {
+                              uploadImage2Screen();
+                            },
+                            icon: Icon(Icons.add_a_photo),
+                            color: Color.fromARGB(255, 94, 115, 128),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   TextField(
                       controller: usernameController,
                       keyboardType: TextInputType.text,

@@ -17,7 +17,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -52,7 +51,8 @@ class MyApp extends StatelessWidget {
               } else if (snapshot.hasError) {
                 return showSnackBar(context, "Something went wrong");
               } else if (snapshot.hasData) {
-                return VerifyEmailPage(); // home() OR verify email
+                return Home();
+                // return VerifyEmailPage(); // home() OR verify email
                 // VerifyEmailPage();
               } else {
                 return Login();
