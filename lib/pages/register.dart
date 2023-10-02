@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,8 @@ import 'package:flutter_flower_app/shared/constants.dart';
 import 'package:flutter_flower_app/shared/snackbar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart' show basename;
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -20,6 +24,7 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   bool isVisable = true;
   File? imgPath;
+  String? imgName;
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
   final emailController = TextEditingController();
@@ -33,13 +38,15 @@ class _RegisterState extends State<Register> {
   bool hasLowercase = false;
   bool hasSpecialCharacters = false;
 
-  uploadImage2Screen() async {
-    final pickedImg =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+  uploadImage2Screen(ImageSource galleryORcamera) async {
+    final pickedImg = await ImagePicker().pickImage(source: galleryORcamera);
     try {
       if (pickedImg != null) {
         setState(() {
           imgPath = File(pickedImg.path);
+          imgName = basename(pickedImg.path);
+          int random = Random().nextInt(9999999);
+          imgName = "$random$imgName";
         });
       } else {
         print("NO img selected");
@@ -47,6 +54,75 @@ class _RegisterState extends State<Register> {
     } catch (e) {
       print("Error => $e");
     }
+    Navigator.pop(context);
+  }
+
+  showmodel() {
+    return showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: EdgeInsets.all(22),
+          height: 170,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTap: () async {
+                  await uploadImage2Screen(ImageSource.camera);
+                },
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.camera,
+                      size: 25,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "From Camera",
+                      style: TextStyle(fontSize: 20),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 22,
+              ),
+              GestureDetector(
+                onTap: () async {
+                  await uploadImage2Screen(ImageSource.gallery);
+                },
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.photo_outlined,
+                      size: 25,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "From Gallery",
+                      style: TextStyle(fontSize: 20),
+                    )
+                  ],
+                ),
+              ),
+              // TextButton(
+              //     onPressed: () {
+              //       Navigator.pop(context);
+              //     },
+              //     child: Text(
+              //       "Cancel",
+              //       style: TextStyle(fontSize: 22),
+              //     ))
+            ],
+          ),
+        );
+      },
+    );
   }
 
   onPasswordChanged(String password) {
@@ -84,6 +160,11 @@ class _RegisterState extends State<Register> {
         email: emailController.text,
         password: passwordController.text,
       );
+      // Upload image to firebase storage
+      final storageRef = FirebaseStorage.instance.ref(imgName);
+      await storageRef.putFile(imgPath!);
+      String url = await storageRef.getDownloadURL();
+
       print(credential.user!.uid);
 
       CollectionReference users =
@@ -92,6 +173,7 @@ class _RegisterState extends State<Register> {
       users
           .doc(credential.user!.uid)
           .set({
+            "imgLink": url,
             'username': usernameController.text,
             'age': ageController.text,
             "title": titleController.text,
@@ -169,10 +251,11 @@ class _RegisterState extends State<Register> {
                               )),
                         Positioned(
                           bottom: -10,
-                          left: 95,
+                          left: 100,
                           child: IconButton(
                             onPressed: () {
-                              uploadImage2Screen();
+                              // uploadImage2Screen();
+                              showmodel();
                             },
                             icon: Icon(Icons.add_a_photo),
                             color: Color.fromARGB(255, 94, 115, 128),
@@ -387,7 +470,9 @@ class _RegisterState extends State<Register> {
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
+                      if (_formKey.currentState!.validate() &&
+                          imgName != null &&
+                          imgPath != null) {
                         await register();
                         if (!mounted) return;
                         Navigator.pushReplacement(
