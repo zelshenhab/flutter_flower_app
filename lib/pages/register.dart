@@ -168,6 +168,7 @@ class _RegisterState extends State<Register> {
       print(credential.user!.uid);
 
       CollectionReference users =
+      
           FirebaseFirestore.instance.collection('users');
 
       users
