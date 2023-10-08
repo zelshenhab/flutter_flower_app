@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
-
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -62,7 +60,7 @@ class _RegisterState extends State<Register> {
       context: context,
       builder: (BuildContext context) {
         return Container(
-          padding: EdgeInsets.all(22),
+          padding: const EdgeInsets.all(22),
           height: 170,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -71,7 +69,7 @@ class _RegisterState extends State<Register> {
                 onTap: () async {
                   await uploadImage2Screen(ImageSource.camera);
                 },
-                child: Row(
+                child: const Row(
                   children: [
                     Icon(
                       Icons.camera,
@@ -87,14 +85,14 @@ class _RegisterState extends State<Register> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 22,
               ),
               GestureDetector(
                 onTap: () async {
                   await uploadImage2Screen(ImageSource.gallery);
                 },
-                child: Row(
+                child: const Row(
                   children: [
                     Icon(
                       Icons.photo_outlined,
@@ -168,7 +166,6 @@ class _RegisterState extends State<Register> {
       print(credential.user!.uid);
 
       CollectionReference users =
-      
           FirebaseFirestore.instance.collection('users');
 
       users
@@ -181,8 +178,9 @@ class _RegisterState extends State<Register> {
             "email": emailController.text,
             "pass": passwordController.text,
           })
-          .then((value) => print("User Added"))
-          .catchError((error) => print("Failed to add user: $error"));
+          .then((value) => print("User Added###################"))
+          .catchError(
+              (error) => print(" ###############Failed to add user: $error"));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         // print('The password provided is too weak.');
@@ -195,6 +193,7 @@ class _RegisterState extends State<Register> {
       }
     } catch (e) {
       // print(e);
+      print("############  showSnackBar ");
       showSnackBar(context, e.toString());
     }
     setState(() {

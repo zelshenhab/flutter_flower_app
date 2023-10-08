@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flower_app/shared/colors.dart';
 import 'package:flutter_flower_app/shared/data_from_firestore.dart';
+import 'package:flutter_flower_app/shared/user_img_from_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -79,12 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Stack(
                     children: [
                       imgPath == null
-                          ? CircleAvatar(
-                              backgroundColor: Colors.white,
-                              radius: 70,
-                              backgroundImage:
-                                  AssetImage("assets/img/avatar.jpeg"),
-                            )
+                          ? ImgUser()
                           : ClipOval(
                               child: Image.file(
                               imgPath!,

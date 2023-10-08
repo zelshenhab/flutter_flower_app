@@ -9,6 +9,7 @@ import 'package:flutter_flower_app/pages/profile_page.dart';
 import 'package:flutter_flower_app/provider/cart.dart';
 import 'package:flutter_flower_app/shared/appbar.dart';
 import 'package:flutter_flower_app/shared/colors.dart';
+import 'package:flutter_flower_app/shared/user_img_from_firestore.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatelessWidget {
@@ -86,10 +87,7 @@ class Home extends StatelessWidget {
                         image: AssetImage("assets/img/zeyad.jpg"),
                         fit: BoxFit.cover),
                   ),
-                  currentAccountPicture: CircleAvatar(
-                    radius: 55,
-                    backgroundImage: AssetImage("assets/img/zeyad.jpg"),
-                  ),
+                  currentAccountPicture: ImgUser(),
                   accountEmail: Text("zeyad@gmail.com"),
                   accountName: Text(
                     "Zeyad Elshenhab",

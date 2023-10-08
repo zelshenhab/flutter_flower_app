@@ -23,30 +23,31 @@ class CheckOut extends StatelessWidget {
           children: [
             SingleChildScrollView(
               child: SizedBox(
-                height: 600,
+                height: 560,
                 child: ListView.builder(
-                    padding: const EdgeInsets.all(8),
-                    itemCount: classInstancee.selectedProducts.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Card(
-                        child: ListTile(
-                          subtitle: Text(
-                              "${classInstancee.selectedProducts[index].price}, ${classInstancee.selectedProducts[index].location}"),
-                          leading: CircleAvatar(
-                            backgroundImage: AssetImage(
-                                classInstancee.selectedProducts[index].imgPath),
-                          ),
-                          title:
-                              Text(classInstancee.selectedProducts[index].name),
-                          trailing: IconButton(
-                              onPressed: () {
-                                classInstancee.delete(
-                                    classInstancee.selectedProducts[index]);
-                              },
-                              icon: Icon(Icons.remove)),
+                  padding: const EdgeInsets.all(8),
+                  itemCount: classInstancee.selectedProducts.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Card(
+                      child: ListTile(
+                        subtitle: Text(
+                            "${classInstancee.selectedProducts[index].price}, ${classInstancee.selectedProducts[index].location}"),
+                        leading: CircleAvatar(
+                          backgroundImage: AssetImage(
+                              classInstancee.selectedProducts[index].imgPath),
                         ),
-                      );
-                    }),
+                        title:
+                            Text(classInstancee.selectedProducts[index].name),
+                        trailing: IconButton(
+                            onPressed: () {
+                              classInstancee.delete(
+                                  classInstancee.selectedProducts[index]);
+                            },
+                            icon: Icon(Icons.remove)),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
             ElevatedButton(
