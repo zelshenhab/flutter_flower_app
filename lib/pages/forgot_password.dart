@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     showDialog(
         context: context,
         builder: (context) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(
               color: Colors.white,
             ),
@@ -36,7 +36,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       if (!mounted) return;
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Login()),
+        MaterialPageRoute(builder: (context) => const Login()),
       );
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, "Error : ${e.code}");
@@ -45,7 +45,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    
     emailController.dispose();
     super.dispose();
   }
@@ -55,7 +55,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: appbarGreen,
-        title: Text("Reset Password"),
+        title: const Text("Reset Password"),
       ),
       body: Center(
         child: Padding(
@@ -65,11 +65,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "Enter Your Email To Reset Your Password",
                   style: TextStyle(fontSize: 18),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 TextFormField(
@@ -86,8 +86,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     obscureText: false,
                     decoration: decorationTextField.copyWith(
                         hintText: "Enter Your Email : ",
-                        suffixIcon: Icon(Icons.email))),
-                SizedBox(
+                        suffixIcon: const Icon(Icons.email))),
+                const SizedBox(
                   height: 30,
                 ),
                 ElevatedButton(
@@ -101,15 +101,15 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(BTNgreen),
-                    padding: MaterialStateProperty.all(EdgeInsets.all(12)),
+                    padding: MaterialStateProperty.all(const EdgeInsets.all(12)),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8))),
                   ),
                   child: isLoading
-                      ? CircularProgressIndicator(
+                      ? const CircularProgressIndicator(
                           color: Colors.white,
                         )
-                      : Text(
+                      : const Text(
                           "Reset Password",
                           style: TextStyle(fontSize: 19),
                         ),

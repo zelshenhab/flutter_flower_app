@@ -1,4 +1,4 @@
-// ignore_for_file: sort_child_properties_last, prefer_const_constructors
+
 
 import 'package:flutter_flower_app/pages/checkout.dart';
 import 'package:flutter_flower_app/provider/cart.dart';
@@ -18,32 +18,32 @@ class ProductAndPrice extends StatelessWidget {
         Stack(
           children: [
             Container(
+                padding: const EdgeInsets.all(5),
+                decoration: const BoxDecoration(
+                    color: Color.fromARGB(211, 164, 255, 193),
+                    shape: BoxShape.circle),
                 child: Text(
                   "${classInstancee.selectedProducts.length}",
-                  style: TextStyle(
-                      fontSize: 15, color: const Color.fromARGB(255, 0, 0, 0)),
-                ),
-                padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                    color: Color.fromARGB(211, 164, 255, 193),
-                    shape: BoxShape.circle)),
+                  style: const TextStyle(
+                      fontSize: 15, color: Color.fromARGB(255, 0, 0, 0)),
+                )),
             IconButton(
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CheckOut(),
+                      builder: (context) => const CheckOut(),
                     ),
                   );
                 },
-                icon: Icon(Icons.add_shopping_cart)),
+                icon: const Icon(Icons.add_shopping_cart)),
           ],
         ),
         Padding(
           padding: const EdgeInsets.only(right: 12),
           child: Text(
             "\$ ${classInstancee.price}",
-            style: TextStyle(fontSize: 18),
+            style: const TextStyle(fontSize: 18),
           ),
         ),
       ],

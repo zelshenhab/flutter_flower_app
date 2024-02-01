@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter_flower_app/provider/cart.dart';
@@ -15,8 +15,8 @@ class CheckOut extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text("Check out"),
-          actions: [ProductAndPrice()],
+          title: const Text("Check out"),
+          actions: const [ProductAndPrice()],
           backgroundColor: appbarGreen,
         ),
         body: Column(
@@ -43,7 +43,7 @@ class CheckOut extends StatelessWidget {
                               classInstancee.delete(
                                   classInstancee.selectedProducts[index]);
                             },
-                            icon: Icon(Icons.remove)),
+                            icon: const Icon(Icons.remove)),
                       ),
                     );
                   },
@@ -54,13 +54,13 @@ class CheckOut extends StatelessWidget {
               onPressed: () {},
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(BTNpink),
-                padding: MaterialStateProperty.all(EdgeInsets.all(12)),
+                padding: MaterialStateProperty.all(const EdgeInsets.all(12)),
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8))),
               ),
               child: Text(
                 "Pay \$${classInstancee.price}",
-                style: TextStyle(fontSize: 19),
+                style: const TextStyle(fontSize: 19),
               ),
             ),
           ],

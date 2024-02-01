@@ -1,4 +1,5 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
+// ignore_for_file: use_build_context_synchronously
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,30 +23,26 @@ class _LoginState extends State<Login> {
   bool isVisable = true;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  bool isLoading = false;
 
   signIn() async {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: Colors.white,
-            ),
-          );
-        });
+    setState(() {
+      isLoading = true;
+    });
+
     try {
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, "Error : ${e.code}");
     }
-    if (!mounted) return;
-    Navigator.pop(context);
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -57,7 +54,7 @@ class _LoginState extends State<Login> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: appbarGreen,
-          title: Text("Sign in"),
+          title: const Text("Sign in"),
         ),
         body: SingleChildScrollView(
             child: Center(
@@ -65,7 +62,7 @@ class _LoginState extends State<Login> {
             padding: const EdgeInsets.all(30.0),
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              SizedBox(
+              const SizedBox(
                 height: 150,
               ),
               TextField(
@@ -74,8 +71,8 @@ class _LoginState extends State<Login> {
                   obscureText: false,
                   decoration: decorationTextField.copyWith(
                       hintText: "Enter Your Email : ",
-                      suffixIcon: Icon(Icons.email))),
-              SizedBox(
+                      suffixIcon: const Icon(Icons.email))),
+              const SizedBox(
                 height: 30,
               ),
               TextField(
@@ -91,9 +88,9 @@ class _LoginState extends State<Login> {
                             });
                           },
                           icon: isVisable
-                              ? Icon(Icons.visibility)
-                              : Icon(Icons.visibility_off)))),
-              SizedBox(
+                              ? const Icon(Icons.visibility)
+                              : const Icon(Icons.visibility_off)))),
+              const SizedBox(
                 height: 40,
               ),
               ElevatedButton(
@@ -102,56 +99,60 @@ class _LoginState extends State<Login> {
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(BTNgreen),
-                  padding: MaterialStateProperty.all(EdgeInsets.all(12)),
+                  padding: MaterialStateProperty.all(const EdgeInsets.all(12)),
                   shape: MaterialStateProperty.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8))),
                 ),
-                child: Text(
+                child: const Text(
                   "Sign in",
                   style: TextStyle(fontSize: 19),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               TextButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ForgotPassword()),
+                      MaterialPageRoute(builder: (context) => const ForgotPassword()),
                     );
                   },
-                  child: Text(
+                  child: const Text(
                     "Forgot Password ? ",
                     style: TextStyle(
                         fontSize: 20, decoration: TextDecoration.underline),
                   )),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Do not have an account?",
+                  const Text("Do not have an account?",
                       style: TextStyle(fontSize: 20)),
                   TextButton(
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => Register()),
+                        MaterialPageRoute(builder: (context) => const Register()),
                       );
                     },
-                    child: Text('Sign Up',
-                        style: TextStyle(
-                            fontSize: 20,
-                            decoration: TextDecoration.underline)),
+                    child: isLoading
+                        ? const CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                        : const Text('Sign Up',
+                            style: TextStyle(
+                                fontSize: 20,
+                                decoration: TextDecoration.underline)),
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 17,
               ),
-              SizedBox(
+              const SizedBox(
                 width: 299,
                 child: Row(
                   children: [
@@ -171,7 +172,7 @@ class _LoginState extends State<Login> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 27),
+                margin: const EdgeInsets.symmetric(vertical: 27),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -180,7 +181,7 @@ class _LoginState extends State<Login> {
                         googleSignInProvier.googlelogin();
                       },
                       child: Container(
-                        padding: EdgeInsets.all(13),
+                        padding: const EdgeInsets.all(13),
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(

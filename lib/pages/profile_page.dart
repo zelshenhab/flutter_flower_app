@@ -1,9 +1,11 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_flower_app/shared/colors.dart';
@@ -11,6 +13,7 @@ import 'package:flutter_flower_app/shared/data_from_firestore.dart';
 import 'package:flutter_flower_app/shared/user_img_from_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:path/path.dart' show basename;
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -22,6 +25,8 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final credential = FirebaseAuth.instance.currentUser;
   File? imgPath;
+  String? imgName;
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
 
   uploadImage2Screen() async {
     final pickedImg =
@@ -30,11 +35,16 @@ class _ProfilePageState extends State<ProfilePage> {
       if (pickedImg != null) {
         setState(() {
           imgPath = File(pickedImg.path);
+          imgName = basename(pickedImg.path);
+          int random = Random().nextInt(9999999);
+          imgName = "$random$imgName";
         });
       } else {
+        // ignore: avoid_print
         print("NO img selected");
       }
     } catch (e) {
+      // ignore: avoid_print
       print("Error => $e");
     }
   }
@@ -50,20 +60,20 @@ class _ProfilePageState extends State<ProfilePage> {
               if (!mounted) return;
               Navigator.pop(context);
             },
-            label: Text(
+            label: const Text(
               "logout",
               style: TextStyle(
                 color: Colors.white,
               ),
             ),
-            icon: Icon(
+            icon: const Icon(
               Icons.logout,
               color: Colors.white,
             ),
           )
         ],
         backgroundColor: appbarGreen,
-        title: Text("Profile Page"),
+        title: const Text("Profile Page"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(22.0),
@@ -73,14 +83,14 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               Center(
                 child: Container(
-                  padding: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
+                  padding: const EdgeInsets.all(5),
+                  decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       color: Color.fromARGB(125, 78, 91, 110)),
                   child: Stack(
                     children: [
                       imgPath == null
-                          ? ImgUser()
+                          ? const ImgUser()
                           : ClipOval(
                               child: Image.file(
                               imgPath!,
@@ -92,27 +102,39 @@ class _ProfilePageState extends State<ProfilePage> {
                         bottom: -10,
                         left: 100,
                         child: IconButton(
-                          onPressed: () {
-                            uploadImage2Screen();
+                          onPressed: () async {
+                            await uploadImage2Screen();
+
+                            if (imgPath != null) {
+                              // Upload image to firebase storage
+                              final storageRef =
+                                  FirebaseStorage.instance.ref(imgName);
+                              await storageRef.putFile(imgPath!);
+                              // Get img url
+                              String url = await storageRef.getDownloadURL();
+                              users.doc(credential!.uid).update({
+                                "imgLink": url,
+                              });
+                            }
                           },
-                          icon: Icon(Icons.add_a_photo),
-                          color: Color.fromARGB(255, 94, 115, 128),
+                          icon: const Icon(Icons.add_a_photo),
+                          color: const Color.fromARGB(255, 94, 115, 128),
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Center(
                   child: Container(
-                padding: EdgeInsets.all(11),
+                padding: const EdgeInsets.all(11),
                 decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 131, 177, 255),
+                    color: const Color.fromARGB(255, 131, 177, 255),
                     borderRadius: BorderRadius.circular(11)),
-                child: Text(
+                child: const Text(
                   "Info from firebase Auth",
                   style: TextStyle(
                     fontSize: 22,
@@ -122,36 +144,36 @@ class _ProfilePageState extends State<ProfilePage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 11,
                   ),
                   Text(
                     "Email:    ${credential!.email}   ",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 20,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 11,
                   ),
                   Text(
                     "Created date:    ${DateFormat("MMMM d, y").format(credential!.metadata.creationTime!)}   ",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 20,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 11,
                   ),
                   Text(
                     "Last Signed In:  ${DateFormat("MMMM d, y").format(credential!.metadata.lastSignInTime!)} ",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 20,
                     ),
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 17,
               ),
               Center(
@@ -165,20 +187,20 @@ class _ProfilePageState extends State<ProfilePage> {
                           Navigator.pop(context);
                         });
                       },
-                      child: Text(
+                      child: const Text(
                         "Delete User",
                         style: TextStyle(fontSize: 22),
                       ))),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Center(
                   child: Container(
-                      padding: EdgeInsets.all(11),
+                      padding: const EdgeInsets.all(11),
                       decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 131, 177, 255),
+                          color: const Color.fromARGB(255, 131, 177, 255),
                           borderRadius: BorderRadius.circular(11)),
-                      child: Text(
+                      child: const Text(
                         "Info from firebase firestore",
                         style: TextStyle(
                           fontSize: 20,

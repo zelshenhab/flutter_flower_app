@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, prefer_const_constructors
+// ignore_for_file: unused_import
 
 import 'package:flutter/material.dart';
 import 'package:flutter_flower_app/pages/checkout.dart';
@@ -44,18 +44,18 @@ class MyApp extends StatelessWidget {
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
+                return const Center(
                     child: CircularProgressIndicator(
                   color: Colors.white,
                 ));
               } else if (snapshot.hasError) {
                 return showSnackBar(context, "Something went wrong");
               } else if (snapshot.hasData) {
-                return Home();
+                return const Home();
                 // return VerifyEmailPage(); // home() OR verify email
                 // VerifyEmailPage();
               } else {
-                return Login();
+                return const Login();
               }
             },
           )),

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,7 +25,7 @@ class _GetDataFromFirestoreState extends State<GetDataFromFirestore> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(11)),
           child: Container(
-            padding: EdgeInsets.all(22),
+            padding: const EdgeInsets.all(22),
             height: 200,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -34,7 +34,7 @@ class _GetDataFromFirestoreState extends State<GetDataFromFirestore> {
                     controller: dialogUsernameController,
                     maxLength: 20,
                     decoration: InputDecoration(hintText: "${data[mykey]}")),
-                SizedBox(
+                const SizedBox(
                   height: 22,
                 ),
                 Row(
@@ -50,7 +50,7 @@ class _GetDataFromFirestoreState extends State<GetDataFromFirestore> {
                             Navigator.pop(context);
                           });
                         },
-                        child: Text(
+                        child: const Text(
                           "Edit",
                           style: TextStyle(fontSize: 20),
                         )),
@@ -59,7 +59,7 @@ class _GetDataFromFirestoreState extends State<GetDataFromFirestore> {
                           // addnewtask();
                           Navigator.pop(context);
                         },
-                        child: Text(
+                        child: const Text(
                           "Cancel",
                           style: TextStyle(fontSize: 20),
                         )),
@@ -82,11 +82,11 @@ class _GetDataFromFirestoreState extends State<GetDataFromFirestore> {
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasError) {
-          return Text("Something went wrong");
+          return const Text("Something went wrong");
         }
 
         if (snapshot.hasData && !snapshot.data!.exists) {
-          return Text("Document does not exist");
+          return const Text("Document does not exist");
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
@@ -95,7 +95,7 @@ class _GetDataFromFirestoreState extends State<GetDataFromFirestore> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Row(
@@ -103,7 +103,7 @@ class _GetDataFromFirestoreState extends State<GetDataFromFirestore> {
                 children: [
                   Text(
                     "Username: ${data['username']}      ",
-                    style: TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 20),
                   ),
                   Row(
                     children: [
@@ -115,17 +115,17 @@ class _GetDataFromFirestoreState extends State<GetDataFromFirestore> {
                                   .update({"username": FieldValue.delete()});
                             });
                           },
-                          icon: Icon(Icons.delete)),
+                          icon: const Icon(Icons.delete)),
                       IconButton(
                           onPressed: () {
                             myDialog(data, 'username');
                           },
-                          icon: Icon(Icons.edit)),
+                          icon: const Icon(Icons.edit)),
                     ],
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Row(
@@ -133,16 +133,16 @@ class _GetDataFromFirestoreState extends State<GetDataFromFirestore> {
                 children: [
                   Text(
                     "Email: ${data['email']}  ",
-                    style: TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 20),
                   ),
                   IconButton(
                       onPressed: () {
                         myDialog(data, 'email');
                       },
-                      icon: Icon(Icons.edit)),
+                      icon: const Icon(Icons.edit)),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Row(
@@ -150,16 +150,16 @@ class _GetDataFromFirestoreState extends State<GetDataFromFirestore> {
                 children: [
                   Text(
                     "Age: ${data['age']}      ",
-                    style: TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 20),
                   ),
                   IconButton(
                       onPressed: () {
                         myDialog(data, 'age');
                       },
-                      icon: Icon(Icons.edit)),
+                      icon: const Icon(Icons.edit)),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Row(
@@ -167,16 +167,16 @@ class _GetDataFromFirestoreState extends State<GetDataFromFirestore> {
                 children: [
                   Text(
                     "Title: ${data['title']}      ",
-                    style: TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 20),
                   ),
                   IconButton(
                       onPressed: () {
                         myDialog(data, 'title');
                       },
-                      icon: Icon(Icons.edit)),
+                      icon: const Icon(Icons.edit)),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Row(
@@ -184,13 +184,13 @@ class _GetDataFromFirestoreState extends State<GetDataFromFirestore> {
                 children: [
                   Text(
                     "Password: ${data['pass']}      ",
-                    style: TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 20),
                   ),
                   IconButton(
                       onPressed: () {
                         myDialog(data, 'pass');
                       },
-                      icon: Icon(Icons.edit)),
+                      icon: const Icon(Icons.edit)),
                 ],
               ),
               Center(
@@ -200,7 +200,7 @@ class _GetDataFromFirestoreState extends State<GetDataFromFirestore> {
                           users.doc(credential!.uid).delete();
                         });
                       },
-                      child: Text(
+                      child: const Text(
                         "Delete Data",
                         style: TextStyle(fontSize: 22),
                       ))),
@@ -208,7 +208,7 @@ class _GetDataFromFirestoreState extends State<GetDataFromFirestore> {
           );
         }
 
-        return Text("loading");
+        return const Text("loading");
       },
     );
   }

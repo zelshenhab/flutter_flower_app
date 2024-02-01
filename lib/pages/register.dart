@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print
+
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -178,15 +180,15 @@ class _RegisterState extends State<Register> {
             "email": emailController.text,
             "pass": passwordController.text,
           })
-          .then((value) => print("User Added###################"))
-          .catchError(
-              (error) => print(" ###############Failed to add user: $error"));
+          .then((value) => print("User Added"))
+          .catchError((error) => print(" Failed to add user: $error"));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         // print('The password provided is too weak.');
         showSnackBar(context, "The password provided is too weak.");
       } else if (e.code == 'email-already-in-use') {
         // print('The account already exists for that email.');
+
         showSnackBar(context, "The account already exists for that email.");
       } else {
         showSnackBar(context, "Error - Please Try Again Later");
@@ -203,7 +205,7 @@ class _RegisterState extends State<Register> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    
     emailController.dispose();
     passwordController.dispose();
     usernameController.dispose();
@@ -217,7 +219,7 @@ class _RegisterState extends State<Register> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: appbarGreen,
-        title: Text("Register"),
+        title: const Text("Register"),
       ),
       body: Center(
         child: Padding(
@@ -229,14 +231,14 @@ class _RegisterState extends State<Register> {
                 // mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
+                    padding: const EdgeInsets.all(5),
+                    decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         color: Color.fromARGB(125, 78, 91, 110)),
                     child: Stack(
                       children: [
                         imgPath == null
-                            ? CircleAvatar(
+                            ? const CircleAvatar(
                                 backgroundColor: Colors.white,
                                 radius: 70,
                                 backgroundImage:
@@ -257,14 +259,14 @@ class _RegisterState extends State<Register> {
                               // uploadImage2Screen();
                               showmodel();
                             },
-                            icon: Icon(Icons.add_a_photo),
-                            color: Color.fromARGB(255, 94, 115, 128),
+                            icon: const Icon(Icons.add_a_photo),
+                            color: const Color.fromARGB(255, 94, 115, 128),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   TextField(
@@ -273,8 +275,8 @@ class _RegisterState extends State<Register> {
                       obscureText: false,
                       decoration: decorationTextField.copyWith(
                           hintText: "Enter Your Username : ",
-                          suffixIcon: Icon(Icons.person))),
-                  SizedBox(
+                          suffixIcon: const Icon(Icons.person))),
+                  const SizedBox(
                     height: 25,
                   ),
                   TextFormField(
@@ -283,7 +285,7 @@ class _RegisterState extends State<Register> {
                       obscureText: false,
                       decoration: decorationTextField.copyWith(
                           hintText: "Enter Your Age : ",
-                          suffixIcon: Icon(Icons.pest_control_rodent))),
+                          suffixIcon: const Icon(Icons.pest_control_rodent))),
                   const SizedBox(
                     height: 25,
                   ),
@@ -293,8 +295,8 @@ class _RegisterState extends State<Register> {
                       obscureText: false,
                       decoration: decorationTextField.copyWith(
                           hintText: "Enter Your Title : ",
-                          suffixIcon: Icon(Icons.person_outline))),
-                  SizedBox(
+                          suffixIcon: const Icon(Icons.person_outline))),
+                  const SizedBox(
                     height: 25,
                   ),
                   TextFormField(
@@ -311,8 +313,8 @@ class _RegisterState extends State<Register> {
                       obscureText: false,
                       decoration: decorationTextField.copyWith(
                           hintText: "Enter Your Email : ",
-                          suffixIcon: Icon(Icons.email))),
-                  SizedBox(
+                          suffixIcon: const Icon(Icons.email))),
+                  const SizedBox(
                     height: 25,
                   ),
                   TextFormField(
@@ -338,9 +340,9 @@ class _RegisterState extends State<Register> {
                                 });
                               },
                               icon: isVisable
-                                  ? Icon(Icons.visibility)
-                                  : Icon(Icons.visibility_off)))),
-                  SizedBox(
+                                  ? const Icon(Icons.visibility)
+                                  : const Icon(Icons.visibility_off)))),
+                  const SizedBox(
                     height: 15,
                   ),
                   Row(
@@ -353,19 +355,19 @@ class _RegisterState extends State<Register> {
                             color:
                                 isPassword8Char ? Colors.green : Colors.white,
                             border: Border.all(color: Colors.grey)),
-                        child: Icon(
+                        child: const Icon(
                           Icons.check,
                           color: Colors.white,
                           size: 15,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
-                      Text("At least 8 Characters"),
+                      const Text("At least 8 Characters"),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Row(
@@ -379,19 +381,19 @@ class _RegisterState extends State<Register> {
                                 ? Colors.green
                                 : Colors.white,
                             border: Border.all(color: Colors.grey)),
-                        child: Icon(
+                        child: const Icon(
                           Icons.check,
                           color: Colors.white,
                           size: 15,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
-                      Text("At least 1 Number"),
+                      const Text("At least 1 Number"),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Row(
@@ -403,19 +405,19 @@ class _RegisterState extends State<Register> {
                             shape: BoxShape.circle,
                             color: hasUppercase ? Colors.green : Colors.white,
                             border: Border.all(color: Colors.grey)),
-                        child: Icon(
+                        child: const Icon(
                           Icons.check,
                           color: Colors.white,
                           size: 15,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
-                      Text("Has Uppercase"),
+                      const Text("Has Uppercase"),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Row(
@@ -427,19 +429,19 @@ class _RegisterState extends State<Register> {
                             shape: BoxShape.circle,
                             color: hasLowercase ? Colors.green : Colors.white,
                             border: Border.all(color: Colors.grey)),
-                        child: Icon(
+                        child: const Icon(
                           Icons.check,
                           color: Colors.white,
                           size: 15,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
-                      Text("Has Lowercase"),
+                      const Text("Has Lowercase"),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Row(
@@ -453,19 +455,19 @@ class _RegisterState extends State<Register> {
                                 ? Colors.green
                                 : Colors.white,
                             border: Border.all(color: Colors.grey)),
-                        child: Icon(
+                        child: const Icon(
                           Icons.check,
                           color: Colors.white,
                           size: 15,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
-                      Text("Has Special Characters"),
+                      const Text("Has Special Characters"),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
                   ElevatedButton(
@@ -477,7 +479,7 @@ class _RegisterState extends State<Register> {
                         if (!mounted) return;
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => Login()),
+                          MaterialPageRoute(builder: (context) => const Login()),
                         );
                         // showSnackBar(context, "Done");
                       } else {
@@ -486,35 +488,35 @@ class _RegisterState extends State<Register> {
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(BTNgreen),
-                      padding: MaterialStateProperty.all(EdgeInsets.all(12)),
+                      padding: MaterialStateProperty.all(const EdgeInsets.all(12)),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8))),
                     ),
                     child: isLoading
-                        ? CircularProgressIndicator(
+                        ? const CircularProgressIndicator(
                             color: Colors.white,
                           )
-                        : Text(
+                        : const Text(
                             "Register",
                             style: TextStyle(fontSize: 19),
                           ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Do not have an account?",
+                      const Text("Do not have an account?",
                           style: TextStyle(fontSize: 20)),
                       TextButton(
                         onPressed: () {
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => Login()),
+                            MaterialPageRoute(builder: (context) => const Login()),
                           );
                         },
-                        child: Text('Sign In',
+                        child: const Text('Sign In',
                             style: TextStyle(
                                 decoration: TextDecoration.underline,
                                 fontSize: 20)),
